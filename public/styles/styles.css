@@ -1,56 +1,631 @@
-/* Colores pastel */
-.bg-pink {
-    background-color: #ffccdd !important;
+/* Variables CSS para la paleta de colores */
+:root {
+    --primary: #ff6fb7;         /* Rosa chicle */
+    --primary-light: #ffb8d9;   /* Rosa claro */
+    --primary-dark: #e84b9c;    /* Rosa oscuro */
+    --secondary: #6a3093;       /* Púrpura */
+    --secondary-light: #9d6cc4; /* Púrpura claro */
+    --secondary-dark: #4a1f6a;  /* Púrpura oscuro */
+    --accent: #f9c74f;          /* Amarillo dorado (acento) */
+    --background: #ffffff;      /* Fondo blanco */
+    --text-dark: #2d2d2d;       /* Texto oscuro */
+    --text-light: #ffffff;      /* Texto claro */
+    --pastel-pink: #ffdbed;     /* Rosa pastel suave (fondos) */
+    --pastel-purple: #f2e6ff;   /* Púrpura pastel (fondos) */
+    --pastel-yellow: #fffaeb;   /* Amarillo pastel (fondos) */
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.2);
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    --transition: all 0.3s ease;
 }
 
-.text-purple {
-    color: #663399 !important;
+/* Estilos generales */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
 }
 
+/* Fix para evitar scroll horizontal */
+.container, .container-fluid {
+    max-width: 100%;
+    box-sizing: border-box;
+    padding-left: 15px;
+    padding-right: 15px;
+    overflow-x: hidden;
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+}
+
+/* Arreglo para todos los elementos contenedores */
+div, section, nav, footer, header, main, article, aside {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-dark);
+    overflow-x: hidden;
+    background-color: var(--background);
+    min-height: 100vh; /* Ensure the body takes at least the full viewport height */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+}
+
+/* Clases de utilidad para colores */
+.bg-primary { background-color: var(--primary) !important; }
+.bg-primary-light { background-color: var(--primary-light) !important; }
+.bg-primary-dark { background-color: var(--primary-dark) !important; }
+.bg-secondary { background-color: var(--secondary) !important; }
+.bg-accent { background-color: var(--accent) !important; }
+.bg-pastel-pink { background-color: var(--pastel-pink) !important; }
+.bg-pastel-purple { background-color: var(--pastel-purple) !important; }
+.bg-pastel-yellow { background-color: var(--pastel-yellow) !important; }
+
+.text-primary { color: var(--primary) !important; }
+.text-secondary { color: var(--secondary) !important; }
+.text-accent { color: var(--accent) !important; }
+.text-light { color: var(--text-light) !important; }
+.text-dark { color: var(--text-dark) !important; }
+
+/* Para compatibilidad con el código existente */
+.bg-pink { background-color: var(--pastel-pink) !important; }
+.text-purple { color: var(--secondary) !important; }
+
+/* Header y encabezados */
 .bg-header {
-    background: linear-gradient(135deg, #ffb6c1, #ff69b4);
-    padding: 50px;
+    background: linear-gradient(135deg, var(--primary-light), var(--primary));
+    padding: 80px 20px;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
 }
 
-/* Estilos adicionales */
+.bg-header::after {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background: var(--background);
+    border-radius: 100% 100% 0 0;
+    z-index: 1;
+}
+
+/* Navbar mejorado */
 .navbar {
-    border-bottom: 3px solid #ff69b4;
+    border: none;
+    padding: 15px 0;
+    transition: var(--transition);
+}
+
+.navbar-scrolled {
+    background-color: var(--background);
+    box-shadow: var(--shadow-md);
 }
 
 .navbar-brand {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.nav-link {
+    font-weight: 600;
+    font-size: 1rem;
+    margin: 0 5px;
+    position: relative;
+    transition: var(--transition);
+    padding: 8px 16px !important;
+    border-radius: var(--radius-sm);
 }
 
 .nav-link:hover {
-    text-decoration: underline;
+    background-color: var(--pastel-pink);
+    color: var(--primary) !important;
+    text-decoration: none;
 }
 
-/* Footer en colores pastel */
-.bg-pink {
-    background-color: #ffccdd !important;
+/* Estilos para el menú desplegable - SOLUCIÓN DEFINITIVA Bootstrap */
+.clean-dropdown {
+    overflow: visible !important;
+    max-height: none !important;
+    min-width: 220px;
+    border: none;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    padding: 8px 0;
+    margin-top: 8px;
+    z-index: 9999;
+    animation: dropdownFadeIn 0.2s ease-out;
 }
 
-.text-purple {
-    color: #663399 !important;
+.clean-dropdown .dropdown-item {
+    padding: 8px 16px;
+    font-weight: 500;
+    color: var(--text-dark);
+    white-space: nowrap;
+    transition: all 0.2s ease;
 }
 
+.clean-dropdown .dropdown-item:hover {
+    background-color: var(--pastel-pink);
+    color: var(--primary);
+}
+
+.clean-dropdown .dropdown-divider {
+    margin: 8px 0;
+    border-color: rgba(0,0,0,0.05);
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tarjetas (Cards) */
+.card {
+    overflow: hidden;
+    transition: var(--transition);
+    border-radius: var(--radius-md);
+    border: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Botones */
+.btn {
+    border-radius: var(--radius-md);
+    padding: 10px 24px;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+/* Botones responsive */
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.875rem;
+}
+
+@media (min-width: 768px) {
+    .btn-md-normal {
+        padding: 10px 24px;
+        font-size: 1rem;
+    }
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+.btn-secondary:hover, .btn-secondary:focus {
+    background-color: var(--secondary-dark);
+    border-color: var(--secondary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-accent {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--text-dark);
+}
+
+.btn-accent:hover, .btn-accent:focus {
+    background-color: #e9b73d;
+    border-color: #e9b73d;
+    color: var(--text-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-outline-primary {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:focus {
+    background-color: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Formularios */
+.form-control {
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(255, 111, 183, 0.25);
+}
+
+/* Paginación */
+.pagination .page-link {
+    border: none;
+    color: var(--secondary);
+    margin: 0 3px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.pagination .page-link:hover {
+    background-color: var(--pastel-pink);
+    color: var(--primary-dark);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--primary);
+    color: white;
+}
+
+/* Footer */
 footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
+    position: relative;
     width: 100%;
-    background-color: #ffccdd; /* Color pastel */
-    padding: 15px;
+    background-color: var(--pastel-pink);
+    padding: 20px 0;
     text-align: center;
-    border-top: 4px solid #ff69b4;
+    z-index: 100;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
 }
 
-/* Iconos de redes sociales */
 footer a {
     font-size: 1.2rem;
+    transition: var(--transition);
+    color: var(--secondary);
+    margin: 0 8px;
 }
 
 footer a:hover {
-    color: #ff69b4 !important;
+    color: var(--primary) !important;
+    transform: scale(1.2);
 }
 
+/* Animaciones y efectos visuales */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
+}
+
+.float {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Efectos de entrada laterales */
+.slide-in-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 0.8s ease;
+}
+
+.slide-in-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: all 0.8s ease;
+}
+
+.slide-in-left.visible, .slide-in-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Zoom In efecto */
+.zoom-in {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.zoom-in.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Rotación */
+.rotate-in {
+    opacity: 0;
+    transform: rotateY(90deg);
+    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.rotate-in.visible {
+    opacity: 1;
+    transform: rotateY(0deg);
+}
+
+/* Animación de brillos */
+.shimmer {
+    position: relative;
+    overflow: hidden;
+}
+
+.shimmer::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(30deg);
+    animation: shimmer 6s infinite;
+    pointer-events: none;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%) rotate(30deg); }
+    100% { transform: translateX(100%) rotate(30deg); }
+}
+
+/* Pulsaciones */
+.pulse {
+    animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Confeti en botones de compra */
+.btn.btn-primary:hover::after {
+    content: '✨';
+    position: absolute;
+    animation: confeti 0.8s ease-out;
+    opacity: 0;
+}
+
+@keyframes confeti {
+    0% { transform: translate(-50%, -100%) scale(0); opacity: 1; }
+    100% { transform: translate(-50%, -200%) scale(1.5); opacity: 0; }
+}
+
+/* Efectos de hover mejorados */
+.hover-lift {
+    transition: var(--transition);
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.hover-scale {
+    transition: var(--transition);
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+/* Subrayado animado para enlaces */
+.animated-underline {
+    position: relative;
+    text-decoration: none;
+}
+
+.animated-underline::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.animated-underline:hover::after {
+    width: 100%;
+}
+
+/* Animación de rebote */
+.bounce {
+    animation: bounce 2s ease infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Efecto Typing para textos */
+.typing {
+    border-right: 2px solid var(--primary);
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+    animation: typing 3s steps(30, end) forwards, blink 1s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink {
+    from, to { border-color: transparent; }
+    50% { border-color: var(--primary); }
+}
+
+/* Animación para iconos de categorías */
+.category-icon {
+    position: relative;
+}
+
+.category-icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    background: var(--primary-light);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    z-index: -1;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.category-icon:hover::after {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0.2;
+}
+
+/* Categorías y productos */
+.category-icon {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    transition: var(--transition);
+}
+
+.card:hover .category-icon {
+    transform: scale(1.1);
+    color: var(--primary-dark);
+}
+
+/* Componentes específicos de la tienda */
+.product-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+.product-img {
+    height: 200px;
+    object-fit: cover;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    max-width: 100%;
+}
+
+/* Corregir overflow en imágenes */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Tablas responsivas */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    .table {
+        table-layout: fixed;
+        width: 100%;
+    }
+}
+
+.product-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.product-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--accent);
+    color: var(--text-dark);
+    padding: 5px 10px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+/* Modales */
+.modal-content {
+    border-radius: var(--radius-md);
+    border: none;
+    box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+    background-color: var(--pastel-pink);
+    border-bottom: none;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.modal-footer {
+    border-top: none;
+}

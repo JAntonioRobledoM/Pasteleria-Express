@@ -1,21 +1,28 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
+
 const app = express();
 
+// Configurar strictQuery
+mongoose.set('strictQuery', false);
+
 // Conectar a MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => console.log("Conectado a MongoDB"))
-  .catch(err => console.error(err));
+(async () => {
+    try {
+        await mongoose.connect(process.env.MONGO_URI);
+        console.log("Conectado a MongoDB");
+    } catch (error) {
+        console.error("Error conectando a MongoDB:", error);
+    }
+})();
 
 // Configuración de Express
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); // reemplaza body-parser
+app.use(express.json()); // Para JSON
 app.use(methodOverride('_method'));
 
 // Importar rutas
@@ -28,6 +35,7 @@ app.get('/', (req, res) => {
 });
 
 // Iniciar servidor
-app.listen(process.env.PORT, () => {
-    console.log(`Servidor en http://localhost:${process.env.PORT}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor en http://localhost:${PORT}`);
 });

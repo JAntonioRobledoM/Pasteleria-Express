@@ -1,70 +1,226 @@
-<%- include('../templates/header', { titulo: 'Lista de Dulces' }) %>
+<%- include('../templates/header', { titulo: 'Panel de Administración' }) %>
+
+<!-- Encabezado de la página con estadísticas -->
+<section class="bg-secondary text-white py-4 mb-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="h2 mb-0">Panel de Administración</h1>
+                <p class="mb-0">Gestiona tu catálogo de productos</p>
+            </div>
+            <div class="col-lg-6">
+                <div class="d-flex justify-content-lg-end mt-3 mt-lg-0">
+                    <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modalNuevoDulce">
+                        <i class="fas fa-plus-circle me-2"></i>Agregar Nuevo Producto
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <div class="container">
-    <h2 class="my-4">Lista de Dulces</h2>
-    
-    <!-- Botón para abrir el modal de Nuevo Dulce -->
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalNuevoDulce">Agregar Dulce</button>
+    <!-- Dashboard con estadísticas -->
+    <div class="row g-4 mb-5">
+        <!-- Card de estadísticas 1 -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card border-0 shadow-sm fade-in" style="animation-delay: 0.1s;">
+                <div class="card-body p-4 d-flex align-items-center">
+                    <div class="rounded-circle bg-pastel-pink p-3 me-3">
+                        <i class="fas fa-birthday-cake fa-2x text-primary"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-0">Total Productos</h5>
+                        <p class="h3 mb-0 text-primary"><%= dulces.length %></p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <table class="table mt-3">
-        <thead>
-            <tr>
-                <th>Imagen</th>
-                <th>Nombre</th>
-                <th>Tipo</th>
-                <th>Descripción</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% dulces.forEach(dulce => { %>
-                <tr>
-                    <td>
-                        <% if (dulce.imagen) { %>
-                            <img src="/uploads/<%= dulce.imagen %>" alt="Imagen de <%= dulce.nombre %>" width="100">
-                        <% } else { %>
-                            <span>Sin imagen</span>
-                        <% } %>
-                    </td>
-                    <td><%= dulce.nombre %></td>
-                    <td><%= dulce.tipo %></td>
-                    <td><%= dulce.descripcion %></td>
-                    <td>
-                        <!-- Botón para abrir el modal de edición -->
-                        <button class="btn btn-warning btnEditar" 
-                            data-bs-toggle="modal" 
-                            data-bs-target="#modalEditarDulce"
-                            data-id="<%= dulce._id %>"
-                            data-nombre="<%= dulce.nombre %>"
-                            data-tipo="<%= dulce.tipo %>"
-                            data-descripcion="<%= dulce.descripcion %>"
-                            data-imagen="<%= dulce.imagen %>">
-                            Editar
-                        </button>
-                        <form action="/dulce/<%= dulce._id %>?_method=DELETE" method="POST" style="display:inline;">
-                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-            <% }) %>
-        </tbody>
-    </table>
+        <!-- Card de estadísticas 2 -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card border-0 shadow-sm fade-in" style="animation-delay: 0.2s;">
+                <div class="card-body p-4 d-flex align-items-center">
+                    <div class="rounded-circle bg-pastel-purple p-3 me-3">
+                        <i class="fas fa-user fa-2x text-secondary"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-0">Admin</h5>
+                        <p class="h6 mb-0">José Antonio Robledo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <!-- Paginación -->
-    <nav>
+        <!-- Card de estadísticas 3 -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card border-0 shadow-sm fade-in" style="animation-delay: 0.3s;">
+                <div class="card-body p-4 d-flex align-items-center">
+                    <div class="rounded-circle bg-pastel-yellow p-3 me-3">
+                        <i class="fas fa-calendar-alt fa-2x text-accent"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-0">Fecha</h5>
+                        <p class="h6 mb-0" id="currentDate">Cargando...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtro y búsqueda -->
+    <div class="row mb-4">
+        <div class="col-lg-6">
+            <div class="input-group mb-3">
+                <span class="input-group-text bg-primary text-white">
+                    <i class="fas fa-search"></i>
+                </span>
+                <input type="text" id="searchInput" class="form-control" placeholder="Buscar productos...">
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="d-flex justify-content-lg-end">
+                <div class="btn-group flex-wrap">
+                    <button type="button" class="btn btn-outline-primary filter-btn active btn-sm btn-md-normal mb-1" data-filter="all">Todos</button>
+                    <button type="button" class="btn btn-outline-primary filter-btn btn-sm btn-md-normal mb-1" data-filter="Pastel">Pasteles</button>
+                    <button type="button" class="btn btn-outline-primary filter-btn btn-sm btn-md-normal mb-1" data-filter="Galleta">Galletas</button>
+                    <button type="button" class="btn btn-outline-primary filter-btn btn-sm btn-md-normal mb-1" data-filter="Caramelo">Caramelos</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de productos mejorada -->
+    <div class="card border-0 shadow-sm mb-5 fade-in">
+        <div class="card-header bg-white py-3">
+            <h5 class="mb-0">Listado de Productos</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle product-table mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="py-3">Producto</th>
+                        <th class="py-3">Tipo</th>
+                        <th class="py-3 d-none d-lg-table-cell">Descripción</th>
+                        <th class="py-3 text-end">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% dulces.forEach(dulce => { %>
+                        <tr class="product-row" data-type="<%= dulce.tipo %>">
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <!-- Imagen del producto -->
+                                    <div class="product-img-wrapper me-3" style="width: 60px; height: 60px; overflow: hidden; border-radius: 8px;">
+                                        <% if (dulce.imagen && dulce.imagen.startsWith('http')) { %>
+                                            <img src="<%= dulce.imagen %>" alt="<%= dulce.nombre %>" class="w-100 h-100 object-fit-cover">
+                                        <% } else if (dulce.imagen) { %>
+                                            <img src="/uploads/<%= dulce.imagen %>" alt="<%= dulce.nombre %>" class="w-100 h-100 object-fit-cover">
+                                        <% } else { %>
+                                            <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                                                <% if (dulce.tipo === 'Pastel') { %>
+                                                    <i class="fas fa-birthday-cake text-primary-light"></i>
+                                                <% } else if (dulce.tipo === 'Galleta') { %>
+                                                    <i class="fas fa-cookie text-primary-light"></i>
+                                                <% } else if (dulce.tipo === 'Caramelo') { %>
+                                                    <i class="fas fa-candy-cane text-primary-light"></i>
+                                                <% } else { %>
+                                                    <i class="fas fa-cookie-bite text-primary-light"></i>
+                                                <% } %>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 product-name"><%= dulce.nombre %></h6>
+                                        <small class="text-muted d-block d-lg-none">ID: <%= dulce._id %></small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge rounded-pill bg-primary-light px-3 py-2"><%= dulce.tipo %></span>
+                            </td>
+                            <td class="d-none d-lg-table-cell">
+                                <p class="mb-0 text-muted small">
+                                    <%= dulce.descripcion.length > 100 ? dulce.descripcion.substring(0, 100) + '...' : dulce.descripcion %>
+                                </p>
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-end gap-2">
+                                    <!-- Botón para abrir el modal de edición -->
+                                    <button class="btn btn-sm btn-outline-primary btnEditar"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEditarDulce"
+                                        data-id="<%= dulce._id %>"
+                                        data-nombre="<%= dulce.nombre %>"
+                                        data-tipo="<%= dulce.tipo %>"
+                                        data-descripcion="<%= dulce.descripcion %>"
+                                        data-imagen="<%= dulce.imagen %>">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+
+                                    <!-- Botón para eliminar con confirmación -->
+                                    <button type="button" class="btn btn-sm btn-outline-danger"
+                                            onclick="confirmDelete('<%= dulce._id %>', '<%= dulce.nombre %>')">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+
+                                    <!-- Formulario oculto para eliminar -->
+                                    <form id="deleteForm<%= dulce._id %>" action="/dulce/<%= dulce._id %>?_method=DELETE" method="POST" style="display:none;">
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }) %>
+
+                    <% if (dulces.length === 0) { %>
+                        <tr>
+                            <td colspan="4" class="text-center py-5">
+                                <div class="text-muted">
+                                    <i class="fas fa-cookie-bite fa-3x mb-3"></i>
+                                    <h5>No hay productos disponibles</h5>
+                                    <p>¡Comienza a añadir productos a tu catálogo!</p>
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevoDulce">
+                                        <i class="fas fa-plus-circle me-1"></i> Añadir Producto
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Paginación mejorada -->
+    <nav aria-label="Paginación de productos" class="my-5">
         <ul class="pagination justify-content-center">
             <% if (currentPage > 1) { %>
                 <li class="page-item">
-                    <a class="page-link" href="/dulce?page=<%= currentPage - 1 %>">Anterior</a>
+                    <a class="page-link" href="/dulce/admin?page=<%= currentPage - 1 %>">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+            <% } else { %>
+                <li class="page-item disabled">
+                    <span class="page-link"><i class="fas fa-chevron-left"></i></span>
                 </li>
             <% } %>
+
             <% for (let i = 1; i <= totalPages; i++) { %>
                 <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                    <a class="page-link" href="/dulce?page=<%= i %>"><%= i %></a>
+                    <a class="page-link" href="/dulce/admin?page=<%= i %>"><%= i %></a>
                 </li>
             <% } %>
+
             <% if (currentPage < totalPages) { %>
                 <li class="page-item">
-                    <a class="page-link" href="/dulce?page=<%= currentPage + 1 %>">Siguiente</a>
+                    <a class="page-link" href="/dulce/admin?page=<%= currentPage + 1 %>">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            <% } else { %>
+                <li class="page-item disabled">
+                    <span class="page-link"><i class="fas fa-chevron-right"></i></span>
                 </li>
             <% } %>
         </ul>
@@ -73,31 +229,48 @@
 
 <!-- MODAL NUEVO DULCE -->
 <div class="modal fade" id="modalNuevoDulce" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Agregar Nuevo Dulce</h5>
+            <div class="modal-header bg-pastel-pink">
+                <h5 class="modal-title text-primary">
+                    <i class="fas fa-plus-circle me-2"></i>Agregar Nuevo Producto
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-4">
                 <form action="/dulce" method="POST" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label class="form-label">Nombre</label>
-                        <input type="text" name="nombre" class="form-control" required>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Nombre del Producto</label>
+                        <input type="text" name="nombre" class="form-control form-control-lg" required placeholder="Ej: Tarta de Chocolate">
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Tipo</label>
-                        <input type="text" name="tipo" class="form-control" required>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Tipo de Producto</label>
+                        <select name="tipo" class="form-select form-select-lg" required>
+                            <option value="" disabled selected>Selecciona un tipo</option>
+                            <option value="Pastel">Pastel</option>
+                            <option value="Galleta">Galleta</option>
+                            <option value="Caramelo">Caramelo</option>
+                            <option value="Chocolate">Chocolate</option>
+                        </select>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Descripción</label>
-                        <textarea name="descripcion" class="form-control" required></textarea>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Descripción</label>
+                        <textarea name="descripcion" class="form-control" rows="4" required placeholder="Describe este producto..."></textarea>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Subir Imagen</label>
-                        <input type="file" name="imagen" class="form-control">
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Imagen del Producto</label>
+                        <input type="file" name="imagen" class="form-control" accept="image/*">
+                        <div class="form-text">Formatos recomendados: JPG, PNG. Tamaño máximo: 2MB</div>
                     </div>
-                    <button type="submit" class="btn btn-success w-100">Agregar</button>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-save me-2"></i>Guardar Producto
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -106,46 +279,98 @@
 
 <!-- MODAL EDITAR DULCE -->
 <div class="modal fade" id="modalEditarDulce" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Editar Dulce</h5>
+            <div class="modal-header bg-pastel-purple">
+                <h5 class="modal-title text-secondary">
+                    <i class="fas fa-edit me-2"></i>Editar Producto
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-4">
                 <form id="formEditar" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="_method" value="PUT">
-                    <div class="mb-3">
-                        <label class="form-label">Nombre</label>
-                        <input type="text" name="nombre" id="editNombre" class="form-control" required>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Nombre del Producto</label>
+                        <input type="text" name="nombre" id="editNombre" class="form-control form-control-lg" required>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Tipo</label>
-                        <input type="text" name="tipo" id="editTipo" class="form-control" required>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Tipo de Producto</label>
+                        <select name="tipo" id="editTipo" class="form-select form-select-lg" required>
+                            <option value="Pastel">Pastel</option>
+                            <option value="Galleta">Galleta</option>
+                            <option value="Caramelo">Caramelo</option>
+                            <option value="Chocolate">Chocolate</option>
+                        </select>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Descripción</label>
-                        <textarea name="descripcion" id="editDescripcion" class="form-control" required></textarea>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Descripción</label>
+                        <textarea name="descripcion" id="editDescripcion" class="form-control" rows="4" required></textarea>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Imagen actual</label>
-                        <img id="editImagenPreview" src="" width="100">
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Imagen actual</label>
+                        <div class="text-center mb-3 p-3 bg-light rounded">
+                            <img id="editImagenPreview" src="" class="img-fluid rounded" style="max-height: 150px;" alt="Vista previa">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Subir Nueva Imagen</label>
-                        <input type="file" name="imagen" class="form-control">
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Cambiar Imagen</label>
+                        <input type="file" name="imagen" class="form-control" accept="image/*">
+                        <div class="form-text">Deja este campo vacío si no quieres cambiar la imagen actual.</div>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Actualizar</button>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-secondary btn-lg">
+                            <i class="fas fa-save me-2"></i>Actualizar Producto
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Confirmar
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center p-4">
+                <div class="mb-3">
+                    <i class="fas fa-trash-alt fa-3x text-danger mb-3"></i>
+                    <h5>¿Eliminar este producto?</h5>
+                    <p class="mb-0" id="deleteProductName"></p>
+                </div>
+                <div class="d-flex justify-content-center gap-2">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    // Fecha actual para el dashboard
+    document.addEventListener("DOMContentLoaded", function() {
+        // Configurar fecha actual
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const today = new Date();
+        document.getElementById('currentDate').textContent = today.toLocaleDateString('es-ES', options);
+
+        // Modal de edición
         const modalEditar = document.getElementById("modalEditarDulce");
-        modalEditar.addEventListener("show.bs.modal", function (event) {
+        modalEditar.addEventListener("show.bs.modal", function(event) {
             const button = event.relatedTarget;
             const id = button.getAttribute("data-id");
             const nombre = button.getAttribute("data-nombre");
@@ -156,11 +381,73 @@
             document.getElementById("editNombre").value = nombre;
             document.getElementById("editTipo").value = tipo;
             document.getElementById("editDescripcion").value = descripcion;
-            document.getElementById("editImagenPreview").src = imagen ? "/uploads/" + imagen : "";
+
+            const imgPreview = document.getElementById("editImagenPreview");
+            if (imagen) {
+                // Si la imagen comienza con http, es una URL externa
+                if (imagen.startsWith('http')) {
+                    imgPreview.src = imagen;
+                } else {
+                    imgPreview.src = "/uploads/" + imagen;
+                }
+                imgPreview.style.display = "block";
+            } else {
+                imgPreview.src = "";
+                imgPreview.style.display = "none";
+            }
 
             document.getElementById("formEditar").setAttribute("action", `/dulce/${id}?_method=PUT`);
         });
+
+        // Filtrado de productos por tipo
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Actualizar clases activas
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                const filterValue = button.getAttribute('data-filter');
+                const rows = document.querySelectorAll('.product-row');
+
+                rows.forEach(row => {
+                    if (filterValue === 'all') {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = row.getAttribute('data-type') === filterValue ? '' : 'none';
+                    }
+                });
+            });
+        });
+
+        // Búsqueda en tiempo real
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            const rows = document.querySelectorAll('.product-row');
+
+            rows.forEach(row => {
+                const productName = row.querySelector('.product-name').textContent.toLowerCase();
+                if (productName.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
     });
+
+    // Función para confirmar eliminación
+    function confirmDelete(id, nombre) {
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+        document.getElementById('deleteProductName').textContent = nombre;
+
+        document.getElementById('confirmDeleteBtn').onclick = function() {
+            document.getElementById('deleteForm' + id).submit();
+        }
+
+        deleteModal.show();
+    }
 </script>
 
 <%- include('../templates/footer') %>

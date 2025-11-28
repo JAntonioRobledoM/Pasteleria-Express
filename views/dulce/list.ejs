@@ -1,54 +1,155 @@
-<%- include('../templates/header', { titulo: 'Lista de Dulces' }) %>
-<div class="container">
-    <h2 class="my-4">Lista de Dulces</h2>
-    <table class="table mt-3">
-        <thead>
-            <tr>
-                <th>Imagen</th>
-                <th>Nombre</th>
-                <th>Tipo</th>
-                <th>Descripción</th>
-            </tr>
-        </thead>
-        <tbody>
+<%- include('../templates/header', { titulo: 'Catálogo de Delicias' }) %>
+
+<!-- Banner de la página -->
+<section class="bg-pastel-pink py-4 mb-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="h2 text-primary mb-2">Nuestro Catálogo de Delicias</h1>
+                <p class="lead text-muted">Explora nuestra variedad de dulces artesanales</p>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="d-flex justify-content-lg-end mt-3 mt-lg-0">
+
+                    <!-- Botones de filtrado -->
+                    <div class="btn-group me-2 flex-wrap">
+                        <a href="/dulce" class="btn <%= !filtroTipo ? 'btn-primary' : 'btn-outline-primary' %> btn-sm btn-md-normal mb-1">Todos</a>
+
+                        <a href="/dulce?tipo=Pastel"
+                           class="btn <%= filtroTipo === 'Pastel' ? 'btn-primary' : 'btn-outline-primary' %> btn-sm btn-md-normal mb-1">
+                            Pasteles
+                        </a>
+
+                        <a href="/dulce?tipo=Galleta"
+                           class="btn <%= filtroTipo === 'Galleta' ? 'btn-primary' : 'btn-outline-primary' %> btn-sm btn-md-normal mb-1">
+                            Galletas
+                        </a>
+
+                        <a href="/dulce?tipo=Caramelo"
+                           class="btn <%= filtroTipo === 'Caramelo' ? 'btn-primary' : 'btn-outline-primary' %> btn-sm btn-md-normal mb-1">
+                            Caramelos
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container flex-grow-1">
+    <!-- Grid de productos -->
+    <div class="row g-4 mb-5">
+        <% if (dulces.length === 0) { %>
+            <div class="col-12 text-center py-5">
+                <div class="display-1 text-muted mb-3"><i class="far fa-sad-tear"></i></div>
+                <h2 class="text-secondary">No se encontraron dulces</h2>
+                <p class="text-muted">No hay dulces disponibles en esta categoría.</p>
+                <a href="/dulce" class="btn btn-primary mt-3">Ver Todo el Catálogo</a>
+            </div>
+        <% } else { %>
             <% dulces.forEach(dulce => { %>
-                <tr>
-                    <td>
-                        <% if (dulce.imagen) { %>
-                            <img src="/uploads/<%= dulce.imagen %>" alt="Imagen de <%= dulce.nombre %>" width="100">
-                        <% } else { %>
-                            <span>Sin imagen</span>
-                        <% } %>
-                    </td>
-                    <td><%= dulce.nombre %></td>
-                    <td><%= dulce.tipo %></td>
-                    <td><%= dulce.descripcion %></td>
-                </tr>
+                <div class="col-lg-4 col-md-6 fade-in">
+                    <div class="card product-card h-100 border-0 shadow-sm">
+
+                        <div class="product-badge"><%= dulce.tipo %></div>
+
+                        <div class="position-relative overflow-hidden" style="height: 220px;">
+                            <% if (dulce.imagen && dulce.imagen.startsWith('http')) { %>
+                                <img src="<%= dulce.imagen %>" alt="<%= dulce.nombre %>" class="w-100 h-100 object-fit-cover">
+                            <% } else if (dulce.imagen) { %>
+                                <img src="/uploads/<%= dulce.imagen %>" alt="<%= dulce.nombre %>" class="w-100 h-100 object-fit-cover">
+                            <% } else { %>
+                                <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                                    <i class="fas fa-cookie-bite fa-4x text-primary-light"></i>
+                                </div>
+                            <% } %>
+
+                            <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-10 d-flex align-items-center justify-content-center opacity-0" style="transition: all .3s ease;">
+                                <button class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#modalDetalle<%= dulce._id %>">
+                                    <i class="fas fa-eye me-1"></i> Ver Detalles
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card-body product-body p-4">
+                            <h3 class="h5 card-title mb-2"><%= dulce.nombre %></h3>
+                            <p class="text-muted small mb-3 flex-grow-1">
+                                <%= dulce.descripcion.length > 100 ? dulce.descripcion.substring(0, 100) + '...' : dulce.descripcion %>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <div class="product-price">6,99 €</div>
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fas fa-shopping-cart me-1"></i> Añadir
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="modalDetalle<%= dulce._id %>" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title"><%= dulce.nombre %></h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <p><%= dulce.descripcion %></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             <% }) %>
-        </tbody>
-    </table>
+        <% } %>
+    </div>
 
     <!-- Paginación -->
-    <nav>
+    <nav aria-label="Paginación" class="my-5">
         <ul class="pagination justify-content-center">
+
             <% if (currentPage > 1) { %>
                 <li class="page-item">
-                    <a class="page-link" href="/dulce?page=<%= currentPage - 1 %>">Anterior</a>
+                    <a class="page-link" href="/dulce?page=<%= currentPage - 1 %><%= filtroTipo ? '&tipo=' + filtroTipo : '' %>">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+            <% } else { %>
+                <li class="page-item disabled">
+                    <span class="page-link"><i class="fas fa-chevron-left"></i></span>
                 </li>
             <% } %>
 
             <% for (let i = 1; i <= totalPages; i++) { %>
                 <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                    <a class="page-link" href="/dulce?page=<%= i %>"><%= i %></a>
+                    <a class="page-link" href="/dulce?page=<%= i %><%= filtroTipo ? '&tipo=' + filtroTipo : '' %>"><%= i %></a>
                 </li>
             <% } %>
 
             <% if (currentPage < totalPages) { %>
                 <li class="page-item">
-                    <a class="page-link" href="/dulce?page=<%= currentPage + 1 %>">Siguiente</a>
+                    <a class="page-link" href="/dulce?page=<%= currentPage + 1 %><%= filtroTipo ? '&tipo=' + filtroTipo : '' %>">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            <% } else { %>
+                <li class="page-item disabled">
+                    <span class="page-link"><i class="fas fa-chevron-right"></i></span>
                 </li>
             <% } %>
+
         </ul>
     </nav>
 </div>
+
+<style>
+.card:hover .position-absolute {
+    opacity: 1 !important;
+}
+</style>
+
 <%- include('../templates/footer') %>
